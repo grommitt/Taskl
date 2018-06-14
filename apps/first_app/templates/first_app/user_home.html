@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" type: "text/css" href="https://stackpath.bootstrapcdn.com/bootswatch/4.1.1/yeti/bootstrap.min.css">
+    <title>{{user.name}}</title>
+    <style>
+        #top-div{
+            max-width: 1000px;
+            padding: 20px;
+            background: rgb(48, 48, 189);
+            margin-bottom: 5px;
+            border-radius: 5px;
+           
+        }
+        #bottom-div{
+            max-width: 1000px;
+            padding: 20px;
+            background: rgb(48, 48, 189);
+            margin-bottom: 5px;
+            border-radius: 5px;
+        }
+        .left{
+            display: inline-block;
+            width: 40%;
+            vertical-align: top;
+            background: white;
+            border-radius: 5px;
+        }
+        .right{
+            display: inline-block;
+            width: 40%;
+            vertical-align: top;
+            background: white;
+            border-radius: 5px;
+        }
+     
+        nav{
+            text-align: right;
+            width: 100%;
+        }
+       
+        
+    </style>
+</head>
+<body>
+        {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    <nav>
+        <a href="/logout/">Logout</a>
+    </nav>
+    <div id="top-div">
+    <fieldset class="left">
+        <table >
+            <thead>
+                <th>Task</th>
+                <th>Action</th>
+            </thead>
+            <tbody>
+                {% for task in others_tasklist %}
+                    <tr>
+                        <td>{{task.name}}</td>
+                        <td><a href="/view_task/{{task.id}}">View</a></td>
+                        <td><a href="{% url 'claim-a-task' task.id %}">add</a></td>
+                        <!-- <td><a href="/claim_job/{{job.id}}">add</a></td> -->
+                        {% if task.created_by == user %}
+                        <td><a href="/edit_task/{{task.id}}">Edit</a></td>
+                        <td><a href="/remove_task/{{task.id}}">Cancel</a></td>
+                        {% endif %}
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </fieldset>
+    <fieldset class="right">
+            <table >
+                <thead>
+                    <th>My Tasks</th>
+                </thead>
+                <tbody>
+                    {% for task in my_tasklist %}
+                        <tr>
+                            <td>{{task.name}}</td>
+                            <td><a href="/view_task/{{task.id}}">View</a></td>
+                            <td><a href="/remove_task/{{task.id}}">Done</a></td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </fieldset>
+    <a href="/create_task/" class='addTask'>Add a task</a>
+    </div>
+
+
+    <div id="bottom-div">
+<!-- FRIENDS CODE -->
+    <fieldset class='left'>
+        <table>
+            <thead>
+                <tr>
+                    <th>friends</th> 
+                </tr>
+            </thead>
+            <tbody>
+                {% for friend in myFriends %}
+                    <tr>
+                        <th>{{friend.alias}}</th>    
+                        <th><a href="{% url 'view-profile' friend.id %}">View Profile</a></th>
+                        <th><a href="{% url 'remove-friend' friend.id %}">Remove as friend</a></th>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+</fieldset>
+<fieldset class="right">
+    <table>
+        <thead>
+            <tr>
+                <th>other peeps</th> 
+            </tr>
+        </thead>
+        <tbody>
+            {% for friend in notFriends %}
+                <tr>  
+                    {% if friend not in myFriends %}
+                    <th><a href="{% url 'view-person' friend.id %}">{{friend.alias}}</a></th>
+                    <th><a href="{% url 'add-friend' friend.id %}">Add as friend</a></th>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</fieldset>
+</div>
+</body>
+</html>
