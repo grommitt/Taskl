@@ -1,6 +1,7 @@
 from django.conf.urls import url
 from . import views           
 urlpatterns = [
+    url(r'^create_message/$', views.create_message),
     url(r'^edit_task/(?P<id>\d+)$', views.edit_task, name='edit'),
     url(r'^create_task/$', views.create_task), 
     url(r'^view_task/(?P<id>\d+)$', views.view_task), 

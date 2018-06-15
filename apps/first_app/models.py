@@ -97,3 +97,10 @@ class Task(models.Model):
     created_on = models.DateField(auto_now_add = True)
     updated_on = models.DateField(auto_now = True)
 
+class Message(models.Model):
+    message = models.TextField()
+    created_by = models.ForeignKey(Membership, related_name='author', null=True)
+    created_on = models.DateField(auto_now_add = True)
+    updated_on = models.DateField(auto_now = True)
+    uploader = models.ForeignKey(Membership, related_name='messages')
+

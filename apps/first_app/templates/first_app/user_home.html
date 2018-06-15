@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" type: "text/css" href="https://stackpath.bootstrapcdn.com/bootswatch/4.1.1/yeti/bootstrap.min.css">
-    <title>{{user.name}}</title>
+    <title>{{user.alias}}'s Taskl</title>
     <style>
         #top-div{
             max-width: 1000px;
@@ -14,6 +14,20 @@
             margin-bottom: 5px;
             border-radius: 5px;
            
+        }
+        #middle-div{
+            max-width: 1000px;
+            padding: 20px;
+            background: rgb(48, 48, 189);
+            margin-bottom: 5px;
+            border-radius: 5px;
+        }
+        #message-div{
+            max-width: 1000px;
+            padding: 20px;
+            background: rgb(48, 48, 189);
+            margin-bottom: 5px;
+            border-radius: 5px;
         }
         #bottom-div{
             max-width: 1000px;
@@ -99,7 +113,7 @@
     </div>
 
 
-    <div id="bottom-div">
+    <div id="middle-div">
 <!-- FRIENDS CODE -->
     <fieldset class='left'>
         <table>
@@ -139,5 +153,21 @@
     </table>
 </fieldset>
 </div>
+<div id="bottom-div">
+<fieldset class="left">
+        <form action="/create_message/" method="POST">
+            {% csrf_token %}
+            <p>message: <textarea name="content"  cols="30" rows="5" placeholder="write your message here"></textarea></p>
+            <input type="submit">
+        </form>
+    </fieldset >
+    <fieldset class="right">
+                {% for message in messages_query %}
+                    <p>{{message.message}}</p>
+                    <p>from: {{message.uploader.alias}}</p>
+                {% endfor %}
+            
+        </fieldset>
+    </div>
 </body>
 </html>

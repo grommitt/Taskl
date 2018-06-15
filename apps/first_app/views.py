@@ -20,6 +20,7 @@ def user_home(request):
         'notFriends': Membership.objects.exclude(id=request.session['user_id']),
         'my_tasklist': Task.objects.filter(claimed_by=user),
         'others_tasklist': Task.objects.exclude(claimed_by=user),
+        'messages_query': Message.objects.all()
         
     }
     if len(friendslist)==0:
@@ -110,6 +111,13 @@ def add_friend(request, id):
     user.friends.add(new_friend)
     user.save()
     return redirect('/user_home')
+
+def create_message(request):
+    user = Membership.objects.get(id=request.session['user_id'])
+    if request.method == "POST":
+        new_message = Message.objects.create(message=request.POST['content'], uploader=user)
+    return redirect('/user_home')
+
 
 def logout(request):
     request.session.clear()
